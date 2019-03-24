@@ -12,6 +12,17 @@ cmd_is_exist () {
   fi 
 }
 
+echo "如果数据库已经存在，会被删除然后重新创建，是否继续(Y or N):"
+
+read option
+
+if [ $option == "Y" ]; then
+  :
+else
+  exit 0
+fi
+  
+
 if [[ -z $1 || -z $2 ]]; then
   echo "请指定mysql用户名和密码" && exit 1
 else
@@ -20,7 +31,6 @@ else
 
   echo "-------------------------------"
   echo "开始创建相关数据库，及数据库表..."
-  echo "相关日志在/tmp/auth-manage.log文件中"
 
   _r=`mysql -u$1 -p$2 -e "source $PWD/db_auth.sql"`
   if [ $? -eq 0 ]; then
