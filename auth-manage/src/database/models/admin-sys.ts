@@ -1,5 +1,5 @@
-import { Model, DataTypes } from 'sequelize';
-import { sequelize        } from '../data-access';
+import { Model, DataTypes } from 'sequelize'
+import { sequelize        } from '../data-access'
 
 export interface AdminSysObj {
   adminId?  : number,   // 管理员id
