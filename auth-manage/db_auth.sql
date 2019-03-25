@@ -52,7 +52,6 @@ CREATE TABLE `department`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `operator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `update_time` datetime(0) DEFAULT NULL,
-  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `parent_id` int(11) DEFAULT NULL,
   `system_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
@@ -74,37 +73,6 @@ CREATE TABLE `department_role`  (
   INDEX `FKA4FEA7567589A5BE`(`roles_id`) USING BTREE,
   CONSTRAINT `FKA4FEA756616E3310` FOREIGN KEY (`departments_id`) REFERENCES `department` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FKA4FEA7567589A5BE` FOREIGN KEY (`roles_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for resource
--- ----------------------------
-DROP TABLE IF EXISTS `resource`;
-CREATE TABLE `resource`  (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `create_time` datetime(0) DEFAULT NULL,
-  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `is_online` int(11) NOT NULL,
-  `operator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `pattern` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `update_time` datetime(0) DEFAULT NULL,
-  `system_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  INDEX `FKEBABC40EF16B7805`(`system_id`) USING BTREE,
-  CONSTRAINT `FKEBABC40EF16B7805` FOREIGN KEY (`system_id`) REFERENCES `system` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for resource_role
--- ----------------------------
-DROP TABLE IF EXISTS `resource_role`;
-CREATE TABLE `resource_role`  (
-  `resources_id` int(11) NOT NULL,
-  `roles_id` int(11) NOT NULL,
-  INDEX `FK3A62CE07FEFAF36E`(`resources_id`) USING BTREE,
-  INDEX `FK3A62CE077589A5BE`(`roles_id`) USING BTREE,
-  CONSTRAINT `FK3A62CE077589A5BE` FOREIGN KEY (`roles_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `FK3A62CE07FEFAF36E` FOREIGN KEY (`resources_id`) REFERENCES `resource` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -151,12 +119,10 @@ DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `create_time` datetime(0) DEFAULT NULL,
-  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `is_online` int(11) NOT NULL,
   `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `operator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
-  `password_state` int(11) DEFAULT NULL,
   `update_time` datetime(0) DEFAULT NULL,
   `system_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,

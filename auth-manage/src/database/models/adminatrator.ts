@@ -1,4 +1,4 @@
-import { Model, DataTypes, UpdateOptions } from 'sequelize'
+import { Model, DataTypes } from 'sequelize'
 import { sequelize } from '../data-access'
 
 export interface AdminatratorObj {
