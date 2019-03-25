@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize/types'
-import { sequelize } from '../data-access'
+import { sequelize        } from '../data-access'
 
 export interface DepartmentObj {
   id?           : number,   // 部门ID
@@ -21,7 +21,56 @@ Department.init({
     type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
     autoIncrement: true,
-  }
+  },
+  createAt: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    field: 'create_at',
+  },
+  updateAt: {
+    type     : DataTypes.DATE,
+    allowNull: false,
+    field    : 'update_at',
+  },
+  description: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
+  isOnline: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false,
+    field: 'is_online',
+  },
+  departmentKey: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+    field: 'department_key',
+  },
+  name: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  operator: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  parentId: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false,
+    field: 'parent_id',
+  },
+  systemId: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: false,
+    field: 'system_id',
+  },
 }, {
-  sequelize: sequelize
+  sequelize: sequelize,
+  timestamps: false,
+  tableName: 'department',
+})
+
+Department.addHook('beforeCreate', (department: any) => {
+  department.createAt = new Date()
+  department.updateAt = department.createAt
 })

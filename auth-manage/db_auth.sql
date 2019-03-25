@@ -66,13 +66,13 @@ CREATE TABLE `department`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `department_role`;
 CREATE TABLE `department_role`  (
-  `roles_id` int(11) NOT NULL,
-  `departments_id` int(11) NOT NULL,
-  PRIMARY KEY (`roles_id`, `departments_id`) USING BTREE,
-  INDEX `FKA4FEA756616E3310`(`departments_id`) USING BTREE,
-  INDEX `FKA4FEA7567589A5BE`(`roles_id`) USING BTREE,
-  CONSTRAINT `FKA4FEA756616E3310` FOREIGN KEY (`departments_id`) REFERENCES `department` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `FKA4FEA7567589A5BE` FOREIGN KEY (`roles_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  `role_id` int(11) NOT NULL,
+  `department_id` int(11) NOT NULL,
+  PRIMARY KEY (`role_id`, `department_id`) USING BTREE,
+  INDEX `FKA4FEA756616E3310`(`department_id`) USING BTREE,
+  INDEX `FKA4FEA7567589A5BE`(`role_id`) USING BTREE,
+  CONSTRAINT `FKA4FEA756616E3310` FOREIGN KEY (`department_id`) REFERENCES `department` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FKA4FEA7567589A5BE` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -109,9 +109,22 @@ CREATE TABLE `system`  (
   `token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `update_time` datetime(0) DEFAULT NULL,
   `web_index` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `group_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
+-- ----------------------------
+-- Table structure for adminatrator_system
+-- ----------------------------
+DROP TABLE IF EXISTS `admin_sys`;
+CREATE TABLE `admin_sys`  (
+  `admin_id` int(11) NOT NULL,
+  `system_id` int(11) NOT NULL,
+  INDEX `FK143BF46A7589A5BE`(`admin_id`) USING BTREE,
+  INDEX `FK143BF46A758CC9E8`(`system_id`) USING BTREE,
+  CONSTRAINT `FK143BF46A7589A5BE` FOREIGN KEY (`admin_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK143BF46A758CC9E8` FOREIGN KEY (`system_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 -- ----------------------------
 -- Table structure for user
 -- ----------------------------
@@ -135,12 +148,12 @@ CREATE TABLE `user`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `user_role`;
 CREATE TABLE `user_role`  (
-  `users_id` int(11) NOT NULL,
-  `roles_id` int(11) NOT NULL,
-  INDEX `FK143BF46A7589A5BE`(`roles_id`) USING BTREE,
-  INDEX `FK143BF46A758CC9E8`(`users_id`) USING BTREE,
-  CONSTRAINT `FK143BF46A7589A5BE` FOREIGN KEY (`roles_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT `FK143BF46A758CC9E8` FOREIGN KEY (`users_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  `user_id` int(11) NOT NULL,
+  `role_id` int(11) NOT NULL,
+  INDEX `FK143BF46A7589A5BE`(`role_id`) USING BTREE,
+  INDEX `FK143BF46A758CC9E8`(`user_id`) USING BTREE,
+  CONSTRAINT `FK143BF46A7589A5BE` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK143BF46A758CC9E8` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 SET FOREIGN_KEY_CHECKS = 1;

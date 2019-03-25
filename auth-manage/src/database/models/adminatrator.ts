@@ -1,20 +1,25 @@
 import { Model, DataTypes } from 'sequelize'
-import { sequelize } from '../data-access'
+import { sequelize        } from '../data-access'
 
 export interface AdminatratorObj {
-  id?      : number,
-  isOnline?: number,
-  username?: string,
-  password?: string,
-  operator?: string,
-  createAt?: Date,
-  updateAt?: Date,
+  id?      : number,   // 管理员id
+  isOnline?: number,   // 是否在线
+  username?: string,   // 用户名
+  password?: string,   // 密码
+  operator?: string,   // 操作人员
+  groupId? : number,   // 系统所属的组, 0-所有,其他为特定组
+  createAt?: Date,     // 创建时间
+  updateAt?: Date,     // 更改时间
 }
 export class Adminatrator extends Model {}
 Adminatrator.init({
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
+    primaryKey: true,
+  },
+  groupId: {
+    type: DataTypes.INTEGER.UNSIGNED,
     primaryKey: true,
   },
   isOnline: {
