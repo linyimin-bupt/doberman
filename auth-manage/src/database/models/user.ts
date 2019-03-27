@@ -2,14 +2,15 @@ import { Model, DataTypes } from 'sequelize'
 import { sequelize        } from '../data-access'
 
 export interface User {
-  id      : number  // 用户id
-  username: string  // 用户名
-  password: string  // 密码
-  isOnline: string  // 是否在线
-  operator: string  // 操作人
-  systemId: number  // 系统id
-  createAt: Date    // 创建时间
-  updateAt: Date    // 更新时间
+  id          : number    // 用户id
+  username    : string    // 用户名
+  password    : string    // 密码
+  isOnline    : string    // 是否在线
+  operator    : string    // 操作人
+  systemId    : number    // 系统id
+  apartmentId?: number,   // 用户所属部门,也可为空
+  createAt    : Date      // 创建时间
+  updateAt    : Date      // 更新时间
 }
 
 export class User extends Model {}
@@ -33,6 +34,11 @@ User.init({
   systemId: {
     type: DataTypes.INTEGER.UNSIGNED,
     allowNull: false,
+    field: 'system_id',
+  },
+  departmentId: {
+    type: DataTypes.INTEGER.UNSIGNED,
+    allowNull: true,
     field: 'system_id',
   },
   isOnline: {
