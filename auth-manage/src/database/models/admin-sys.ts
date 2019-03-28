@@ -3,10 +3,13 @@ import { sequelize        } from '../data-access'
 
 export interface AdminSysObj {
   adminId?  : number,   // 管理员id
-  system_id?: number,   // 系统id
+  systemId?: number,   // 系统id
 }
 
-export class AdminSys extends Model {}
+export class AdminSys extends Model {
+  public adminId : number  // 管理员id
+  public systemId: number  // 系统id
+}
 
 AdminSys.init({
   adminId: {

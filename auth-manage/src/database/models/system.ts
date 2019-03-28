@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize/types'
+import { Model, DataTypes } from 'sequelize'
 import { sequelize        } from '../data-access'
 export interface SystemObj {
   id?         : number  // 系统id
@@ -16,7 +16,19 @@ export interface SystemObj {
 
 
 
-export class System extends Model {}
+export class System extends Model {
+  public id         : number  // 系统id
+  public appKey     : string  // 系统appkey
+  public secret     : string  // 系统密钥
+  public description: string  // 系统描述
+  public isOnline   : number  // 是否在线
+  public name       : string  // 系统名称
+  public operator   : string  // 操作人
+  public token      : string  // 系统token
+  public webIndex   : string  // 系统首页
+  public createAt   : Date    // 创建时间
+  public updateAt   : Date    // 更新时间
+}
 
 System.init({
   id: {
@@ -26,12 +38,10 @@ System.init({
   },
   createAt: {
     type: DataTypes.DATE,
-    allowNull: false,
     field: 'create_at',
   },
   updateAt: {
     type     : DataTypes.DATE,
-    allowNull: false,
     field    : 'update_at',
   },
   description: {
@@ -63,11 +73,11 @@ System.init({
   },
   token: {
     type: DataTypes.STRING(255),
-    allowNull: false,
+    allowNull: true,
   },
   webIndex: {
     type: DataTypes.STRING(255),
-    allowNull: false,
+    allowNull: true,
     field: 'web_index',
   },
 }, {
