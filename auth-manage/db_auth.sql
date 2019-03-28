@@ -99,7 +99,7 @@ CREATE TABLE `role`  (
 DROP TABLE IF EXISTS `system`;
 CREATE TABLE `system`  (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `appkey` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `app_key` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `create_at` datetime(0) DEFAULT NULL,
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `is_online` int(11) NOT NULL,
