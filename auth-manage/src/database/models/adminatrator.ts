@@ -10,7 +10,15 @@ export interface AdminatratorObj {
   createAt?   : Date,     // 创建时间
   updateAt?   : Date,     // 更改时间
 }
-export class Adminatrator extends Model {}
+export class Adminatrator extends Model {
+  id      : number  // 管理员id
+  isOnline: number  // 是否在线
+  username: string  // 用户名
+  password: string  // 密码
+  operator: string  // 操作人员
+  createAt: Date    // 创建时间
+  updateAt: Date    // 更改时间
+}
 Adminatrator.init({
   id: {
     type: DataTypes.INTEGER.UNSIGNED,
