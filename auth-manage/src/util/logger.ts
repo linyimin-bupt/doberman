@@ -1,0 +1,1 @@
+export const LOGGER = require('tracer').colorConsole({level: process.env.LOG_LEVEL || 'debug'})
