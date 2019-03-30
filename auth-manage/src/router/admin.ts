@@ -14,6 +14,9 @@ import {
   SystemObj,
                           } from '../database/models/system'
 import * as uuid            from 'uuid4'
+import { Department, DepartmentObj } from '../database/models/department';
+import { Role } from '../database/models/role';
+import { DepartmentRole } from '../database/models/user-role';
 
 export const adminRrouter: Router = Router()
 
@@ -269,16 +272,103 @@ adminRrouter.delete('/systems/:id', async (req: Request, res: Response) => {
   res.json(result)
 })
 
-// 部门
-adminRrouter.get('/departments', (req: Request, res: Response) => {
-  
+// 部门 
+adminRrouter.get('/departments', async (req: Request, res: Response) => {
+  const result: ResponseFormat = {
+    code   : 0,
+    message: '',
+    data   : null,
+  }
+  if (req.session && req.session.user) {
+    try {
+      const adminId   = req.session.user.userId
+      const username  = req.session.user.username
+      let systemIds: Array<number>
+      if (username === 'admin') {
+        systemIds = (await AdminSys.findAll()).map(adminSys => adminSys.systemId)        
+      } else {
+        systemIds = (await AdminSys.findAll({ where: {adminId: adminId} })).map(adminSys => adminSys.systemId)
+      }
+      const departments = await Department.findAll({ where: {systemId: systemIds}})
+      result.data       = departments.map(async department => {
+        const system = await System.findByPk(department.systemId)
+        return {
+          id           : department.id,
+          name         : department.name,
+          descrition   : department.description,
+          departmentKey: department.departmentKey,
+          operator     : department.operator,
+          createAt     : department.createAt,
+          updateAt     : department.updateAt,
+          systemId     : department.systemId,
+          systemName   : system!.name,
+        }
+      })
+    } catch (e) {
+      result.code = 1
+      result.message = 'find system error'
+      LOGGER.error(`get /aprtments error: %s`, JSON.stringify(e, null, 2))
+    }
+  } else {
+    // TODO: 填写前端对应的登录地址
+    res.redirect('/login')
+  }
+  res.json(result)
 })
 
-adminRrouter.get('/departments/:id', (req: Request, res: Response) => {
-  
+adminRrouter.get('/departments/:id', async (req: Request, res: Response) => {
+  const departmentId = req.params.id
+  const result: ResponseFormat = {
+    code   : 0,
+    message: '',
+    data   : null,
+  }
+  try {
+    const department  = await Department.findByPk(departmentId)
+    if (department) {
+      const system      = await System.findByPk(department.systemId)
+      const departments = (await Department.findAll({where: {systemId: department.systemId}})).filter(temp => department.id != temp.id)
+      const roleIds     = (await DepartmentRole.findAll({where: {departmentId: department.id}})).map(departmentRole => departmentRole.roleId)
+      const roles       = await Role.findAll({where: {id: roleIds}})
+      result.data = {
+        department : department,    // 本部门信息
+        roles      : roles,         // 角色信息
+        systemName : system!.name,  // 系统名称
+        departments: departments,   // 所属部门信息
+      }
+    } else {
+      result.code = 1
+      result.message = `departemnt ${departmentId} is not found`
+      LOGGER.error(`departemnt ${departmentId} is not found`)      
+    }
+  } catch (e) {
+    result.code = 1
+    result.message = 'find system error'
+    LOGGER.error(`get /department:${departmentId} error: %s`, JSON.stringify(e, null, 2))
+  }
+  res.json(result)
 })
 
-adminRrouter.put('/departments/:id', (req: Request, res: Response) => {
+adminRrouter.put('/departments/:id', async (req: Request, res: Response) => {
+  const data: DepartmentObj = req.body
+  const departmentId        = req.params.id
+  const response: ResponseFormat = {
+    code   : 0,
+    message: '',
+    data   : null,
+  }
+  try {
+    data.updateAt = new Date()
+    await Department.update(data, { where: { id: departmentId } })
+    if (data.roleId != null || data.roleId != undefined) {
+      await DepartmentRole.update({roleId: data.roleId})
+    }
+  } catch (e) {
+    response.code = 1
+    response.message = 'Not found'
+    LOGGER.error(`put /systems:${departmentId} error: %j`, e)
+  }
+  res.json(response)
   
 })
 

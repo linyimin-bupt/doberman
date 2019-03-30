@@ -6,7 +6,10 @@ export interface UserRoleObj {
   roleId?: number  // 角色id
 }
 
-export class DepartmentRole extends Model {}
+export class DepartmentRole extends Model {
+  public userId: number  // 用户id
+  public roleId: number  // 角色id
+}
 
 DepartmentRole.init({
   userId: {

@@ -12,9 +12,22 @@ export interface DepartmentObj {
   operator?     : string,   // 操作人
   parentId?     : number,   // 上级部门id
   systemId?     : number,   // 所属系统id
+  roleId?       : number,    // 所属角色
 }
 
-export class Department extends Model {}
+export class Department extends Model {
+  public id           : number  // 部门ID
+  public createAt     : Date    // 创建时间
+  public updateAt     : Date    // 更改时间
+  public description  : string  // 部门描述
+  public isOnline     : number  // 是否在线
+  public departmentKey: number  // 部门唯一标识
+  public name         : string  // 部门名称
+  public operator     : string  // 操作人
+  public parentId     : number  // 上级部门id
+  public systemId     : number  // 所属系统id
+  public roleIdl      : number  // 所属角色
+}
 
 Department.init({
   id: {
